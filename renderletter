@@ -1,0 +1,11 @@
+#! /bin/bash
+
+echo Running Pandoc...
+pandoc \
+  --pdf-engine=xelatex \
+  --template=letter_template.tex \
+  -s ./coverletter.md \
+  -f markdown \
+  -t latex \
+  -o ./letter.pdf
+echo Done

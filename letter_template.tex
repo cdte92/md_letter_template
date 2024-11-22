@@ -1,0 +1,118 @@
+%!TEX program = xelatex 
+
+\documentclass[$size$, 12pt]{letter}
+\usepackage[a4paper, margin=1.5in]{geometry}
+
+\usepackage{cmbright}
+\usepackage[OT1]{fontenc}
+
+
+
+\usepackage{fixltx2e}
+
+\usepackage{datetime}
+\ddmmyyyydate
+
+\usepackage{ifthen}
+
+% Adds microtypography features: character protrusion, for XeTeX.
+\usepackage{microtype}
+\usepackage{graphicx}
+
+% Allows links.
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[xetex, bookmarks, colorlinks, breaklinks]{hyperref}
+\hypersetup{colorlinks=true, urlcolor=NavyBlue, linkcolor=NavyBlue}
+
+\urlstyle{rm}
+
+\frenchspacing{}        % Remove extra spaces after periods.
+\pagestyle{empty}       % Remove page numbers.
+
+\usepackage{fontspec}
+%\defaultfontfeatures{Mapping=tex-text}  % Sets quotation marks.
+%\setromanfont{Times}
+%\setsansfont[BoldFont={Helvetica Neue Bold}]{Helvetica Neue}
+%\setmonofont[Scale=MatchLowercase]{Helvetica}
+
+% From default template
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\newcommand\shyp{\-}
+%
+% new command to set up the address details on the top right
+% hand side of the letter. may include email and phone if they are required to be incduded
+%
+% parameters are:
+% address - first line of address
+% city 
+% county
+% postcode
+% phone number
+% email address
+%
+\newcommand{\header}[9]
+{
+    {
+    	\hypersetup{hidelinks}
+    	\noindent
+    	\parbox[b][0.625in][t]{5.75in}
+    	{
+        	\vspace{-0.3in}
+            \hfill
+        	\parbox[b][0.625in][t]{2.5in}
+        	{
+            	\setlength{\baselineskip}{12pt}
+                #1,\\
+                #2,\\#3,\\#4
+                 
+              \ifthenelse{\equal{#5}{true}}{\vspace{0.2in}Phone: #6\\}{}   
+              \ifthenelse{\equal{#7}{true}}{{Email: \href{mailto:#8}{#8}\\}}{\vspace{0.2in}}
+            
+              \today
+     %           }
+            }
+  		}
+  	}
+}
+
+
+\begin{document}
+
+\header{$head.address$}{$head.city$}{$head.county$}{$head.postcode$}{$head.include_phone$}{$head.phone$}{$head.include_email$}{$head.email$}{$sig.name$}
+
+$if(head.include_phone)$
+	\vspace{0.2in}
+$endif$
+
+$if(head.include_email)$
+	\vspace{0.2in}
+$endif$
+
+%\vspace{0.75in}
+
+$body$
+
+$if(sig.include)$
+    \begin{minipage}[t]{6.5in}
+    Sincerely,\\
+    
+    \vspace{0.1in}
+
+    $if(sig.sign)$
+        \vspace{-0.2in}\includegraphics[height=0.5in]{./Signature.pdf}
+    $else$
+        \vspace{0.2in}
+    $endif$
+    \vspace{0.2in}
+    $sig.name$\\
+    \end{minipage}
+$endif$
+
+$if(ps)$
+    $ps$
+$endif$
+
+\end{document}
+
